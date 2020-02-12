@@ -1,7 +1,6 @@
+# This script switches out colors from a nodes file for use in hive plot html.  
+#!/usr/bin/env python2
 
-# This program switches out colors from a nodes file for use in hive plot html.  
-
-  
 def strp (var):
 	var = var.strip("\t")
 	var = var.strip("\n")
@@ -66,4 +65,3 @@ for values in links:
 f.write("];")
 f.close()
 print "Saved as:", savename	
-	
