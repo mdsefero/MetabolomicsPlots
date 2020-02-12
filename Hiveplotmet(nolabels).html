@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  fill: none;
+  stroke-width: 2px;
+}
+
+.axis, .node {
+  stroke: #000;
+  stroke-width: 3px;
+}
+
+</style>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script src="http://d3js.org/d3.hive.v0.min.js"></script>
+<script>
+
+var width = 1200,
+    height = 1200,
+    innerRadius = 40,
+    outerRadius = 540;
+var angle = d3.scale.ordinal().domain(d3.range(5)).rangePoints([0, 2 * Math.PI]),
+    radius = d3.scale.linear().range([innerRadius, outerRadius]),
+    color = d3.scale.category20c().domain(d3.range(20));
+	
+var nodes = [
+	{name:"1040M", group:2, x:0, y:0.980836237},
+	{name:"61M", group:2, x:0, y:0.975609756},
+	{name:"562M", group:5, x:0, y:0.041811847},
+	{name:"71M", group:2, x:0, y:0.973867596},
+	{name:"62M", group:2, x:0, y:0.966898955},
+	{name:"590M", group:2, x:0, y:0.987804878},
+	{name:"592M", group:2, x:0, y:0.024390244},
+	{name:"53M", group:5, x:0, y:0},
+	{name:"591M", group:2, x:0, y:0.841463415},
+	{name:"970M", group:8, x:0, y:0.489547038},
+	{name:"430M", group:9, x:0, y:0.986062718},
+	{name:"20M", group:5, x:0, y:0.879790941},
+	{name:"630M", group:5, x:0, y:0.87804878},
+	{name:"900M", group:5, x:0, y:0.630662021},
+	{name:"600M", group:2, x:0, y:0.578397213},
+	{name:"270M", group:8, x:0, y:0.526132404},
+	{name:"250M", group:8, x:0, y:0.503484321},
+	{name:"1040L", group:2, x:1, y:1},
+	{name:"61L", group:2, x:1, y:0.991289199},
+	{name:"562L", group:5, x:1, y:0.987804878},
+	{name:"71L", group:2, x:1, y:0.984320557},
+	{name:"790L", group:13, x:1, y:0.975609756},
+	{name:"62L", group:2, x:1, y:0.965156794},
+	{name:"561L", group:2, x:1, y:0.932055749},
+	{name:"590L", group:2, x:1, y:0.867595819},
+	{name:"592L", group:2, x:1, y:0.858885017},
+	{name:"53L", group:5, x:1, y:0.740418118},
+	{name:"100L", group:2, x:1, y:0.662020906},
+	{name:"140L", group:2, x:1, y:0.637630662},
+	{name:"591L", group:2, x:1, y:0.282229965},
+	{name:"280L", group:8, x:1, y:0.228222997},
+	{name:"290L", group:8, x:1, y:0.228222997},
+	{name:"HMDB00067L", group:2, x:2, y:0.645323227},
+	{name:"HMDB00131L", group:2, x:2, y:0.056222145},
+	{name:"HMDB00207L", group:2, x:2, y:0.179397823},
+	{name:"HMDB00211L", group:5, x:2, y:0.67977359},
+	{name:"HMDB00220L", group:2, x:2, y:0.147487607},
+	{name:"HMDB00638L", group:2, x:2, y:0.021647752},
+	{name:"HMDB00673L", group:2, x:2, y:0.179397823},
+	{name:"HMDB00687L", group:8, x:2, y:0.643253213},
+	{name:"HMDB00827L", group:2, x:2, y:0.124078062},
+	{name:"HMDB01043L", group:2, x:2, y:0.164526317},
+	{name:"HMDB01423L", group:2, x:2, y:0.747558767},
+	{name:"HMDB01547L", group:8, x:2, y:0.167179274},
+	{name:"HMDB01999L", group:2, x:2, y:0.161387607},
+	{name:"HMDB02068L", group:2, x:2, y:0.010729535},
+	{name:"HMDB02212L", group:2, x:2, y:0.056435119},
+	{name:"HMDB02869L", group:2, x:2, y:1},
+	{name:"HMDB02925L", group:2, x:2, y:0.156829005},
+	{name:"HMDB03466L", group:5, x:2, y:0.652424778},
+	{name:"HMDB05060L", group:2, x:2, y:0.006028934},
+	{name:"HMDB06547L", group:2, x:2, y:0.025720601},
+	{name:"HMDB11134L", group:2, x:2, y:0.056352924},
+	{name:"HMDB00094M", group:5, x:3, y:0.33086672},
+	{name:"HMDB00139M", group:2, x:3, y:0.180733804},
+	{name:"HMDB00161M", group:10, x:3, y:0.260600721},
+	{name:"HMDB00172M", group:8, x:3, y:0.195342134},
+	{name:"HMDB00187M", group:10, x:3, y:0.268895883},
+	{name:"HMDB00207M", group:2, x:3, y:0.305607579},
+	{name:"HMDB00211M", group:5, x:3, y:0.203752915},
+	{name:"HMDB00220M", group:2, x:3, y:0.305757041},
+	{name:"HMDB00263M", group:5, x:3, y:0.125048225},
+	{name:"HMDB00638M", group:2, x:3, y:0.278741717},
+	{name:"HMDB00673M", group:2, x:3, y:0.287092927},
+	{name:"HMDB00806M", group:2, x:3, y:0.305887821},
+	{name:"HMDB00939M", group:8, x:3, y:0.189502391},
+	{name:"HMDB00965M", group:9, x:3, y:0.116225979},
+	{name:"HMDB01043M", group:2, x:3, y:0.322982579},
+	{name:"HMDB01206M", group:2, x:3, y:0.339442123},
+	{name:"HMDB01999M", group:2, x:3, y:0.315154488},
+	{name:"HMDB02068M", group:2, x:3, y:0.323225456},
+	{name:"HMDB02925M", group:2, x:3, y:0.310521154},
+	{name:"HMDB05060M", group:2, x:3, y:0.378825459},
+	{name:"HMDB06547M", group:2, x:3, y:0.317882176},
+];
+
+
+var links = [
+	{source: nodes[0], target: nodes[17]},
+	{source: nodes[1], target: nodes[18]},
+	{source: nodes[2], target: nodes[19]},
+	{source: nodes[3], target: nodes[20]},
+	{source: nodes[4], target: nodes[22]},
+	{source: nodes[5], target: nodes[24]},
+	{source: nodes[6], target: nodes[25]},
+	{source: nodes[7], target: nodes[26]},
+	{source: nodes[8], target: nodes[29]},
+	{source: nodes[17], target: nodes[45]},
+	{source: nodes[17], target: nodes[50]},
+	{source: nodes[17], target: nodes[36]},
+	{source: nodes[17], target: nodes[40]},
+	{source: nodes[17], target: nodes[46]},
+	{source: nodes[17], target: nodes[34]},
+	{source: nodes[17], target: nodes[38]},
+	{source: nodes[17], target: nodes[41]},
+	{source: nodes[17], target: nodes[48]},
+	{source: nodes[17], target: nodes[44]},
+	{source: nodes[18], target: nodes[40]},
+	{source: nodes[18], target: nodes[37]},
+	{source: nodes[18], target: nodes[36]},
+	{source: nodes[19], target: nodes[35]},
+	{source: nodes[20], target: nodes[36]},
+	{source: nodes[20], target: nodes[42]},
+	{source: nodes[22], target: nodes[36]},
+	{source: nodes[23], target: nodes[33]},
+	{source: nodes[24], target: nodes[41]},
+	{source: nodes[24], target: nodes[52]},
+	{source: nodes[25], target: nodes[51]},
+	{source: nodes[26], target: nodes[49]},
+	{source: nodes[26], target: nodes[35]},
+	{source: nodes[27], target: nodes[32]},
+	{source: nodes[27], target: nodes[47]},
+	{source: nodes[28], target: nodes[32]},
+	{source: nodes[28], target: nodes[43]},
+	{source: nodes[29], target: nodes[38]},
+	{source: nodes[30], target: nodes[39]},
+	{source: nodes[30], target: nodes[39]},
+	{source: nodes[70], target: nodes[0]},
+	{source: nodes[72], target: nodes[0]},
+	{source: nodes[60], target: nodes[0]},
+	{source: nodes[58], target: nodes[0]},
+	{source: nodes[63], target: nodes[0]},
+	{source: nodes[67], target: nodes[0]},
+	{source: nodes[71], target: nodes[0]},
+	{source: nodes[69], target: nodes[0]},
+	{source: nodes[68], target: nodes[1]},
+	{source: nodes[64], target: nodes[1]},
+	{source: nodes[58], target: nodes[1]},
+	{source: nodes[62], target: nodes[1]},
+	{source: nodes[60], target: nodes[1]},
+	{source: nodes[59], target: nodes[2]},
+	{source: nodes[68], target: nodes[2]},
+	{source: nodes[68], target: nodes[3]},
+	{source: nodes[60], target: nodes[3]},
+	{source: nodes[68], target: nodes[4]},
+	{source: nodes[60], target: nodes[4]},
+	{source: nodes[67], target: nodes[5]},
+	{source: nodes[73], target: nodes[6]},
+	{source: nodes[59], target: nodes[7]},
+	{source: nodes[63], target: nodes[8]},
+	{source: nodes[57], target: nodes[9]},
+	{source: nodes[55], target: nodes[9]},
+	{source: nodes[56], target: nodes[9]},
+	{source: nodes[66], target: nodes[10]},
+	{source: nodes[68], target: nodes[11]},
+	{source: nodes[53], target: nodes[11]},
+	{source: nodes[61], target: nodes[11]},
+	{source: nodes[53], target: nodes[12]},
+	{source: nodes[54], target: nodes[12]},
+	{source: nodes[68], target: nodes[12]},
+	{source: nodes[68], target: nodes[13]},
+	{source: nodes[57], target: nodes[15]},
+	{source: nodes[65], target: nodes[15]},
+	{source: nodes[55], target: nodes[16]},
+];
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+svg.selectAll(".axis")
+   .data(d3.range(4))
+  .enter().append("line")
+    .attr("class", "axis")
+    .attr("transform", function(d) { return "rotate(" + degrees(angle(d)) + ")"; })
+    .attr("x1", radius.range()[0])
+    .attr("x2", radius.range()[1]);
+
+svg.selectAll(".link")
+    .data(links)
+  .enter().append("path")
+    .attr("class", "link")
+    .attr("d", d3.hive.link()
+    .angle(function(d) { return angle(d.x); })
+    .radius(function(d) { return radius(d.y); }))
+    .style("stroke", function(d) { return color(d.source.group); });
+var nodes = svg.selectAll("g.node")
+    .data(nodes, function (d) {
+        return d.name;
+    }); 
+nodes.enter()
+     .append("g");
+nodes.append("circle")
+    .attr("class", "node")
+    .attr("transform", function(d) { return "rotate(" + degrees(angle(d.x)) + ")"; })
+    .attr("cx", function(d) { return radius(d.y); })
+    .attr("r", 5)
+    .style("fill", function(d) { return color(d.group); });
+// Append name as label to each node  
+//nodes.append("g")
+//    .attr("class", "text")
+//	.attr("transform", function(d) { 
+//    	var t = "rotate(" + degrees(angle(d.x)) + ")";
+//    	t += "translate(" + radius(d.y) + ",0)";
+//    	return t; 
+//	})
+//	.append("text")
+//    .attr("transform", function(d) { 
+//    	var t = "rotate(" + -degrees(angle(d.x)) + ")";
+//    	return t; 
+//	})
+//    .text(function(d) {return d.name;})//	
+
+function degrees(radians) {
+  return radians / Math.PI * 180 - 90;
+}
+
+</script>
