@@ -1,4 +1,4 @@
-# This script formats .CSV of number, axis and value data into nodes for in HTML HivePlot generation in D3
+# This script formats the .CSV of number, axis and value data into nodes for HivePlot generation using d3
 
 #!/usr/bin/env python2
   
