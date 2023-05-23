@@ -2,7 +2,9 @@
 
 This repository contains code to make Hive and PLSDA plots used for metabolomic data sets
 
-This repository contains the code that was used to create hive plots and PLSDA plots for the cited paper below. Hive plots are useful plots for making sense of messy interconected data, like network data. For Hive plots, the origional javascript D3 code was taken from With modifications and custom suporting scripts for the current implementation. Please cite the origional source and the manuscipt below. https://bost.ocks.org/mike/hive/ https://d3js.org/
+This repository contains the code that was used to create hive plots and PLSDA plots for the cited paper below. Hive plots are useful plots for making sense of messy interconected data, like network data. For Hive plots, the origional javascript D3 code was taken from With modifications and custom suporting scripts for the current implementation. Please cite the origional source and the manuscipt below. 
+https://bost.ocks.org/mike/hive/ 
+https://d3js.org/
 
 Please cite: 
 
